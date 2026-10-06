@@ -50,15 +50,21 @@ def user_from_request(db, request: Request) -> User | None:
     return db.get(User, row.user_id)
 
 
-def set_session_cookie(response: Response, token: str) -> None:
+def set_session_cookie(response: Response, token: str, secure: bool = False) -> None:
     response.set_cookie(
         COOKIE,
         token,
         httponly=True,
         samesite="lax",
+        secure=secure,
         max_age=60 * 60 * 24 * 30,
         path="/",
     )
+
+
+def https_request(request: Request) -> bool:
+    forwarded = request.headers.get("x-forwarded-proto", "")
+    return forwarded.split(",")[0].strip().lower() == "https"
 
 
 def clear_session_cookie(response: Response) -> None:

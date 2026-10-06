@@ -15,6 +15,7 @@ from app import db as database
 from app.auth import (
     clear_session_cookie,
     hash_password,
+    https_request,
     new_session,
     require_admin,
     require_user,
@@ -74,7 +75,7 @@ def current_user(request: Request, response: Response, db: Session = Depends(get
     user, token = require_user(db, request)
     if token:
         db.commit()
-        set_session_cookie(response, token)
+        set_session_cookie(response, token, secure=https_request(request))
     return user
 
 
@@ -148,7 +149,7 @@ def me(user: User = Depends(current_user)):
 
 
 @app.post("/api/login")
-def login(body: LoginBody, response: Response, db: Session = Depends(get_db)):
+def login(body: LoginBody, request: Request, response: Response, db: Session = Depends(get_db)):
     settings = get_settings()
     if settings.deploy_mode != "product":
         raise HTTPException(status_code=400, detail="O modo pessoal entra direto, sem senha.")
@@ -156,7 +157,7 @@ def login(body: LoginBody, response: Response, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == email).one_or_none()
     if user is None or not verify_password(body.password, user.password_hash):
         raise HTTPException(status_code=401, detail="E-mail ou senha inválidos.")
-    set_session_cookie(response, new_session(db, user))
+    set_session_cookie(response, new_session(db, user), secure=https_request(request))
     return _public_user(user)
 
 
