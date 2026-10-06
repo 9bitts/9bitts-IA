@@ -2,7 +2,7 @@
 
 import os
 import subprocess
-import threading
+import sys
 import time
 import urllib.request
 from pathlib import Path
@@ -25,12 +25,16 @@ def _pull_models() -> None:
 
 
 def main() -> None:
+    if "--pull" in sys.argv:
+        _pull_models()
+        return
     Path("/data/models").mkdir(parents=True, exist_ok=True)
     env = os.environ.copy()
     env["OLLAMA_HOST"] = "127.0.0.1:11434"
     env["OLLAMA_MODELS"] = "/data/models"
     subprocess.Popen(["ollama", "serve"], env=env)
-    threading.Thread(target=_pull_models, daemon=True).start()
+    # Processo separado: o exec abaixo substitui este programa e mataria uma thread.
+    subprocess.Popen([sys.executable, __file__, "--pull"], env=env, start_new_session=True)
     port = os.environ.get("PORT", "8080")
     os.execvp(
         "uvicorn",
