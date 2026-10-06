@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>9bitts IA</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div id="login" class="login hidden">
+    <form id="login-form" class="login-card">
+      <p class="eyebrow">9bitts IA</p>
+      <h1>Entrar</h1>
+      <p class="lede">Cada conta vê só as próprias conversas e os próprios documentos.</p>
+      <label for="login-email">E-mail</label>
+      <input id="login-email" name="email" type="email" autocomplete="username" required />
+      <label for="login-password">Senha</label>
+      <input id="login-password" name="password" type="password" autocomplete="current-password" required />
+      <p id="login-error" class="error" role="alert"></p>
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
+
+  <div id="shell" class="shell hidden">
+    <aside class="rail">
+      <div class="brand">
+        <span class="mark" aria-hidden="true">9</span>
+        <div>
+          <strong>9bitts IA</strong>
+          <small>assistente local</small>
+        </div>
+      </div>
+      <button id="new-chat" class="new-chat" type="button">Nova conversa</button>
+      <nav id="conv-list" class="conv-list" aria-label="Conversas"></nav>
+      <div class="rail-foot">
+        <button id="open-settings" class="ghost" type="button">Ajustes</button>
+        <button id="logout" class="ghost hidden" type="button">Sair</button>
+        <p id="runtime-line" class="runtime-line"></p>
+      </div>
+    </aside>
+
+    <section class="chat">
+      <header class="top">
+        <label class="sr" for="conv-title">Título da conversa</label>
+        <input id="conv-title" class="title" value="" placeholder="Nova conversa" disabled />
+        <div id="models" class="models" role="group" aria-label="Modelo"></div>
+      </header>
+      <div id="transcript" class="transcript" aria-live="polite"></div>
+      <form id="composer" class="composer">
+        <label class="sr" for="input">Mensagem</label>
+        <textarea id="input" rows="1" placeholder="Pergunte alguma coisa"></textarea>
+        <button id="send" type="submit">Enviar</button>
+      </form>
+    </section>
+  </div>
+
+  <dialog id="settings">
+    <form method="dialog" class="settings-form">
+      <header class="settings-head">
+        <h2>Ajustes</h2>
+        <button type="submit" class="ghost" value="close">Fechar</button>
+      </header>
+
+      <label for="persona">Persona</label>
+      <textarea id="persona" rows="8"></textarea>
+      <button id="save-persona" type="button">Salvar persona</button>
+
+      <div id="folder-block">
+        <label for="folder">Pasta de documentos</label>
+        <input id="folder" type="text" placeholder="C:\caminho\da\pasta" />
+        <div class="row">
+          <button id="save-folder" type="button">Usar esta pasta</button>
+          <button id="reindex" type="button" class="ghost">Atualizar índice</button>
+        </div>
+        <p id="folder-note" class="note"></p>
+      </div>
+
+      <div id="upload-block" class="hidden">
+        <label for="upload">Documento desta conta</label>
+        <input id="upload" type="file" accept=".txt,.md,.markdown,.csv,.json" />
+      </div>
+
+      <p id="index-line" class="note"></p>
+      <ul id="sources" class="sources"></ul>
+
+      <section class="deploy" id="deploy"></section>
+      <p id="settings-error" class="error" role="alert"></p>
+
+      <div id="admin-block" class="hidden">
+        <h3>Nova conta</h3>
+        <label for="new-name">Nome</label>
+        <input id="new-name" type="text" />
+        <label for="new-email">E-mail</label>
+        <input id="new-email" type="email" />
+        <label for="new-password">Senha</label>
+        <input id="new-password" type="password" />
+        <button id="create-user" type="button">Criar conta</button>
+        <ul id="user-list" class="sources"></ul>
+      </div>
+    </form>
+  </dialog>
+  <script src="/app.js"></script>
+</body>
+</html>

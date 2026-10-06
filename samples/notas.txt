@@ -1,0 +1,4 @@
+Notas de teste do assistente local.
+
+O código do cofre de teste é 9BITTS-1842.
+A pasta de trabalho fica neste notebook até o dia em que a inferência for para um servidor com GPU.
